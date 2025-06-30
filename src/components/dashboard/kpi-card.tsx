@@ -17,15 +17,20 @@ type KpiCardProps = {
   change: string;
   icon: keyof typeof iconMap;
   iconColor?: string;
+  formatAsCurrency?: boolean;
 };
 
-export default function KpiCard({ title, amount, change, icon, iconColor }: KpiCardProps) {
+export default function KpiCard({ title, amount, change, icon, iconColor, formatAsCurrency = true }: KpiCardProps) {
   const { currency, language } = usePreferences();
 
-  const formattedAmount = new Intl.NumberFormat(language === 'id' ? 'id-ID' : 'en-US', {
-    style: 'currency',
-    currency: currency,
-  }).format(parseFloat(amount));
+  const formattedAmount = formatAsCurrency
+    ? new Intl.NumberFormat(language === 'id' ? 'id-ID' : 'en-US', {
+        style: 'currency',
+        currency: currency,
+        notation: 'compact',
+        compactDisplay: 'short',
+      }).format(parseFloat(amount))
+    : new Intl.NumberFormat(language === 'id' ? 'id-ID' : 'en-US').format(parseFloat(amount));
 
   const Icon = iconMap[icon];
 

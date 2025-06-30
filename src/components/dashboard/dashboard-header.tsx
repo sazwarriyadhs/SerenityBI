@@ -38,8 +38,8 @@ export default function DashboardHeader() {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Serenity PanganSight Dashboard',
-        text: 'Check out this analysis of the Indonesian food market!',
+        title: 'Kraft Heinz MarketSight Dashboard',
+        text: 'Check out this analysis of the Kraft Heinz market data!',
         url: window.location.href,
       }).catch(console.error);
     } else {
@@ -128,7 +128,7 @@ export default function DashboardHeader() {
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <div className="flex items-center gap-2">
         <Logo className="h-8 w-8 text-primary" />
-        <h1 className="text-xl font-semibold">Serenity PanganSight</h1>
+        <h1 className="text-xl font-semibold">Kraft Heinz MarketSight</h1>
       </div>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <div className="ml-auto flex items-center gap-2">

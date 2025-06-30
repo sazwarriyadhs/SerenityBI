@@ -1,3 +1,5 @@
+"use client";
+
 import DashboardHeader from '@/components/dashboard/dashboard-header';
 import KpiCard from '@/components/dashboard/kpi-card';
 import SalesOverTimeChart from '@/components/dashboard/sales-over-time-chart';
@@ -7,8 +9,11 @@ import AiTrendSummary from '@/components/dashboard/ai-trend-summary';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { recentSales } from '@/lib/data';
+import { usePreferences } from '@/contexts/preferences-context';
 
 export default function DashboardPage() {
+  const { currency } = usePreferences();
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
       <DashboardHeader />
@@ -16,31 +21,34 @@ export default function DashboardPage() {
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           <KpiCard
             title={{ en: 'Total Revenue', id: 'Total Pendapatan' }}
-            amount="45231.89"
-            change="+20.1%"
+            amount="125231098"
+            change="+12.5%"
             icon="DollarSign"
             iconColor="text-green-500"
           />
           <KpiCard
-            title={{ en: 'Total Sales', id: 'Total Penjualan' }}
-            amount="2350"
-            change="+180.1%"
+            title={{ en: 'Units Sold', id: 'Unit Terjual' }}
+            amount="18540302"
+            change="+8.2%"
             icon="ShoppingCart"
             iconColor="text-blue-500"
+            formatAsCurrency={false}
           />
           <KpiCard
-            title={{ en: 'Products', id: 'Produk' }}
-            amount="1245"
-            change="+19%"
+            title={{ en: 'Active SKUs', id: 'SKU Aktif' }}
+            amount="1480"
+            change="+54"
             icon="Package"
             iconColor="text-purple-500"
+            formatAsCurrency={false}
           />
           <KpiCard
-            title={{ en: 'Vendors', id: 'Vendor' }}
-            amount="34"
-            change="+2"
+            title={{ en: 'Retail Partners', id: 'Mitra Ritel' }}
+            amount="85"
+            change="+3"
             icon="Users"
             iconColor="text-orange-500"
+            formatAsCurrency={false}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
@@ -75,7 +83,7 @@ export default function DashboardPage() {
                         </div>
                       </TableCell>
                       <TableCell>{sale.region}</TableCell>
-                      <TableCell className="text-right">{sale.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD'})}</TableCell>
+                      <TableCell className="text-right">{sale.amount.toLocaleString('en-US', { style: 'currency', currency: currency })}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
