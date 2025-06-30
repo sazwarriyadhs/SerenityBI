@@ -9,7 +9,7 @@ export function Logo(props: SVGProps<SVGSVGElement>) {
     >
       <rect width="100" height="100" rx="15" fill="hsl(var(--primary))" />
       <text x="50%" y="52%" dominantBaseline="central" textAnchor="middle" fontSize="50" fontWeight="bold" fill="hsl(var(--primary-foreground))">
-        KH
+        MS
       </text>
     </svg>
   );

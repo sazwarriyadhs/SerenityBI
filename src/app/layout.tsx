@@ -4,8 +4,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { PreferencesProvider } from '@/contexts/preferences-context';
 
 export const metadata: Metadata = {
-  title: 'Kraft Heinz MarketSight',
-  description: 'Interactive dashboard for Kraft Heinz market analysis.',
+  title: 'Indonesian MarketSight',
+  description: 'Interactive dashboard for Indonesian food market analysis.',
 };
 
 export default function RootLayout({
