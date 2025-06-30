@@ -6,9 +6,6 @@ import SalesOverTimeChart from '@/components/dashboard/sales-over-time-chart';
 import SalesByProductChart from '@/components/dashboard/sales-by-product-chart';
 import GeospatialView from '@/components/dashboard/geospatial-view';
 import AiTrendSummary from '@/components/dashboard/ai-trend-summary';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { recentSales } from '@/lib/data';
 import { usePreferences } from '@/contexts/preferences-context';
 
 export default function DashboardPage() {
@@ -58,42 +55,9 @@ export default function DashboardPage() {
           <SalesByProductChart />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:gap-8">
-            <GeospatialView />
-        </div>
-
         <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2">
-          <AiTrendSummary />
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
-            </CardHeader>
-            <CardContent>
-               <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Product</TableHead>
-                    <TableHead>Region</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentSales.map((sale) => (
-                    <TableRow key={sale.id}>
-                      <TableCell>
-                        <div className="font-medium">{sale.product}</div>
-                        <div className="hidden text-sm text-muted-foreground md:inline">
-                          {sale.vendor}
-                        </div>
-                      </TableCell>
-                      <TableCell>{sale.region}</TableCell>
-                      <TableCell className="text-right">{sale.amount.toLocaleString(language === 'id' ? 'id-ID' : 'en-US', { style: 'currency', currency: currency })}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+            <GeospatialView />
+            <AiTrendSummary />
         </div>
       </main>
     </div>
