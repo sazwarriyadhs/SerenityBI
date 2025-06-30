@@ -18,31 +18,39 @@ import { usePreferences } from '@/contexts/preferences-context';
 export default function AiTrendSummary() {
   const [isPending, startTransition] = useTransition();
   const [summary, setSummary] = useState<string | null>(null);
+  const [anomalies, setAnomalies] = useState<string | null>(null);
   const { toast } = useToast();
   const { language } = usePreferences();
   
   const titles = {
     en: "AI-Powered Trend Analysis",
     id: "Analisis Tren Berbasis AI"
-  }
+  };
 
   const descriptions = {
     en: "Get an AI-generated summary of market trends based on the latest data.",
     id: "Dapatkan ringkasan tren pasar dari AI berdasarkan data terbaru."
-  }
+  };
   
   const buttonLabels = {
     en: "Generate Summary",
     id: "Buat Ringkasan"
-  }
+  };
   
   const loadingMessages = {
     en: "Generating...",
     id: "Menghasilkan..."
-  }
+  };
+
+  const anomalyLabels = {
+    en: "Anomalies Detected",
+    id: "Anomali Terdeteksi"
+  };
 
   const handleClick = () => {
     startTransition(async () => {
+      setSummary(null);
+      setAnomalies(null);
       const result = await getMarketSummary();
       if (result.error) {
         toast({
@@ -50,8 +58,9 @@ export default function AiTrendSummary() {
           title: 'Error',
           description: result.error,
         });
-      } else if (result.summary) {
-        setSummary(result.summary);
+      } else {
+        setSummary(result.summary ?? null);
+        setAnomalies(result.anomalies ?? null);
       }
     });
   };
@@ -70,7 +79,15 @@ export default function AiTrendSummary() {
             <Skeleton className="h-4 w-3/4" />
           </div>
         ) : summary ? (
-          <p className="text-sm text-muted-foreground">{summary}</p>
+          <div className="text-sm text-muted-foreground space-y-4">
+            <p className="whitespace-pre-wrap">{summary}</p>
+            {anomalies && (
+                <div>
+                    <h4 className="font-semibold text-card-foreground">{anomalyLabels[language]}</h4>
+                    <p className="whitespace-pre-wrap">{anomalies}</p>
+                </div>
+            )}
+          </div>
         ) : null}
         <Button onClick={handleClick} disabled={isPending}>
           <Wand2 className="mr-2 h-4 w-4" />

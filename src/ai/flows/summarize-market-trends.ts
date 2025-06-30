@@ -1,4 +1,3 @@
-// Summarize Market Trends flow implemented.
 'use server';
 /**
  * @fileOverview An AI agent that summarizes recent trends in the Indonesian food market.
@@ -52,14 +51,21 @@ const summarizeMarketTrendsPrompt = ai.definePrompt({
   name: 'summarizeMarketTrendsPrompt',
   input: {schema: SummarizeMarketTrendsInputSchema},
   output: {schema: SummarizeMarketTrendsOutputSchema},
-  prompt: `You are an expert market analyst specializing in the Indonesian food market. You are given a dataset and its description, and you need to provide a concise summary of the recent trends, identifying any emerging patterns and anomalies.
+  prompt: `You are an expert market analyst specializing in the Indonesian food market. Based on the provided transaction data, generate a concise summary of the key market trends. 
+
+Your summary should highlight:
+- Top-performing products and regions.
+- Any observable sales patterns or growth trends.
+- Potential market opportunities.
+
+Additionally, identify any significant anomalies in the data, such as unusually high or low sales figures for a product or region, and list them in the 'anomalies' field.
 
 Dataset Description: {{{datasetDescription}}}
 
-Dataset:
-{{#if data}} {{{data}}} {{else}} No data provided. {{/if}}
+Dataset (CSV format):
+{{{data}}}
 
-Summary:`,
+Provide your analysis based *only* on the data provided.`,
 });
 
 const summarizeMarketTrendsFlow = ai.defineFlow(
