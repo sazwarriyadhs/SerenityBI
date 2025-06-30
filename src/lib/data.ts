@@ -78,7 +78,7 @@ export const recentSales = [
   { id: 44, product: 'Jasmine Tea', vendor: 'Warung Kita', region: 'Bali', amount: 648.33 },
   { id: 45, product: 'White Sugar', vendor: 'Pangan Makmur', region: 'Semarang', amount: 81.33 },
   { id: 46, product: 'All-purpose Flour', vendor: 'Sumber Rejeki', region: 'Makassar', amount: 395.78 },
-  { id: 7, product: 'Organic Eggs', vendor: 'Agro Lestari', region: 'Palembang', amount: 699.99 },
+  { id: 47, product: 'Organic Eggs', vendor: 'Agro Lestari', region: 'Palembang', amount: 699.99 },
   { id: 48, product: 'Fresh Milk', vendor: 'Tani Jaya', region: 'Yogyakarta', amount: 737.58 },
   { id: 49, product: 'Whole Wheat Bread', vendor: 'Warung Kita', region: 'Denpasar', amount: 645.1 },
   { id: 50, product: 'Premium Rice', vendor: 'Pangan Makmur', region: 'Jakarta', amount: 673.49 },
