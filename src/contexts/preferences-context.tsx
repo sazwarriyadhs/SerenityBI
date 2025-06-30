@@ -1,6 +1,8 @@
+
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
+import { useClient } from './client-context';
 
 type Language = 'en' | 'id';
 type Currency = 'USD' | 'IDR';
@@ -17,8 +19,14 @@ const PreferencesContext = createContext<PreferencesContextType | undefined>(
 );
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('en');
-  const [currency, setCurrency] = useState<Currency>('IDR');
+  const { activeClient } = useClient();
+  const [language, setLanguage] = useState<Language>(activeClient.defaultPreferences.language);
+  const [currency, setCurrency] = useState<Currency>(activeClient.defaultPreferences.currency);
+
+  useEffect(() => {
+    setLanguage(activeClient.defaultPreferences.language);
+    setCurrency(activeClient.defaultPreferences.currency);
+  }, [activeClient]);
 
   return (
     <PreferencesContext.Provider

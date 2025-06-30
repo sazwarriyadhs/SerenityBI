@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { PreferencesProvider } from '@/contexts/preferences-context';
+import { ClientProvider } from '@/contexts/client-context';
 
 export const metadata: Metadata = {
   title: 'Indonesian MarketSight',
@@ -24,10 +25,12 @@ export default function RootLayout({
         ></link>
       </head>
       <body className="font-body antialiased">
-        <PreferencesProvider>
-          {children}
-          <Toaster />
-        </PreferencesProvider>
+        <ClientProvider>
+          <PreferencesProvider>
+            {children}
+            <Toaster />
+          </PreferencesProvider>
+        </ClientProvider>
       </body>
     </html>
   );

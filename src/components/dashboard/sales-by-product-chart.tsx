@@ -13,16 +13,20 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { salesByProductData, type ChartConfig } from '@/lib/data';
+import type { ChartConfig } from '@/components/ui/chart';
+import { useClient } from '@/contexts/client-context';
 
 const chartConfig = {
   sales: {
     label: 'Sales',
-    color: 'hsl(var(--primary))',
+    color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig;
 
 export default function SalesByProductChart() {
+  const { activeClient } = useClient();
+  const { salesByProductData } = activeClient;
+
   return (
     <Card>
       <CardHeader>

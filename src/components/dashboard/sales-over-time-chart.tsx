@@ -15,16 +15,20 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from '@/components/ui/chart';
-import { salesOverTimeData, type ChartConfig } from '@/lib/data';
+import type { ChartConfig } from '@/components/ui/chart';
+import { useClient } from '@/contexts/client-context';
 
 const chartConfig = {
   sales: {
     label: 'Sales',
-    color: 'hsl(var(--primary))',
+    color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig;
 
 export default function SalesOverTimeChart() {
+  const { activeClient } = useClient();
+  const { salesOverTimeData } = activeClient;
+
   return (
     <Card>
       <CardHeader>

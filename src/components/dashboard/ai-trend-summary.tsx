@@ -14,6 +14,7 @@ import { getMarketSummary } from '@/lib/actions';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { usePreferences } from '@/contexts/preferences-context';
+import { useClient } from '@/contexts/client-context';
 
 export default function AiTrendSummary() {
   const [isPending, startTransition] = useTransition();
@@ -21,6 +22,7 @@ export default function AiTrendSummary() {
   const [anomalies, setAnomalies] = useState<string | null>(null);
   const { toast } = useToast();
   const { language } = usePreferences();
+  const { activeClient } = useClient();
   
   const titles = {
     en: "AI-Powered Trend Analysis",
@@ -51,7 +53,10 @@ export default function AiTrendSummary() {
     startTransition(async () => {
       setSummary(null);
       setAnomalies(null);
-      const result = await getMarketSummary();
+      
+      const datasetDescription = `This dataset contains recent sales transactions for ${activeClient.name}. It includes product name, vendor, region, and transaction amount.`;
+      const result = await getMarketSummary(datasetDescription, activeClient.recentSales);
+
       if (result.error) {
         toast({
           variant: 'destructive',

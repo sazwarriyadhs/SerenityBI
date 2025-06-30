@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Building,
   Calendar as CalendarIcon,
   ChevronDown,
   Download,
@@ -15,15 +16,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Logo } from '@/components/icons';
 import { PreferencesSheet } from '@/components/dashboard/preferences-sheet';
-import { products, recentSales, regions } from '@/lib/data';
 import { usePreferences } from '@/contexts/preferences-context';
+import { useClient } from '@/contexts/client-context';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -34,16 +29,17 @@ import { saveAs } from 'file-saver';
 
 export default function DashboardHeader() {
   const { language } = usePreferences();
+  const { clients, activeClient, switchClient } = useClient();
+  const { Logo, name: clientName, recentSales, products, regions } = activeClient;
 
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Indonesian MarketSight Dashboard',
-        text: 'Check out this analysis of the Indonesian food market data!',
+        title: `${clientName} Dashboard`,
+        text: `Check out this analysis for ${clientName}!`,
         url: window.location.href,
       }).catch(console.error);
     } else {
-      // Fallback for browsers that do not support the Web Share API
       navigator.clipboard.writeText(window.location.href);
       alert('Link copied to clipboard!');
     }
@@ -59,7 +55,7 @@ export default function DashboardHeader() {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('dashboard-summary.pdf');
+        pdf.save(`${activeClient.id}-summary.pdf`);
       });
     }
   };
@@ -69,7 +65,7 @@ export default function DashboardHeader() {
     const worksheet = XLSX.utils.json_to_sheet(dataToExport);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Recent Sales');
-    XLSX.writeFile(workbook, 'dashboard-summary.xlsx');
+    XLSX.writeFile(workbook, `${activeClient.id}-summary.xlsx`);
   };
 
   const handleExportDOCX = () => {
@@ -110,13 +106,13 @@ export default function DashboardHeader() {
     });
 
     Packer.toBlob(doc).then(blob => {
-        saveAs(blob, "dashboard-summary.docx");
+        saveAs(blob, `${activeClient.id}-summary.docx`);
     });
 };
   
   const filterLabels = {
-    en: { period: 'Period', region: 'Region', product: 'Product', export: 'Export' },
-    id: { period: 'Periode', region: 'Wilayah', product: 'Produk', export: 'Ekspor' },
+    en: { period: 'Period', region: 'Region', product: 'Product', export: 'Export', client: 'Client' },
+    id: { period: 'Periode', region: 'Wilayah', product: 'Produk', export: 'Ekspor', client: 'Klien' },
   };
 
   const exportLabels = {
@@ -127,11 +123,28 @@ export default function DashboardHeader() {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <div className="flex items-center gap-2">
-        <Logo className="h-8 w-8 text-primary" />
-        <h1 className="text-xl font-semibold">Indonesian MarketSight</h1>
+        <Logo className="h-8 w-auto text-primary" />
+        <h1 className="text-xl font-semibold">{clientName}</h1>
       </div>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <div className="ml-auto flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <Building className="mr-2 h-4 w-4" />
+                {filterLabels[language].client}
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {clients.map((client) => (
+                <DropdownMenuItem key={client.id} onClick={() => switchClient(client.id)}>
+                  {client.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
