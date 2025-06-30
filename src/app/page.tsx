@@ -12,7 +12,7 @@ import { recentSales } from '@/lib/data';
 import { usePreferences } from '@/contexts/preferences-context';
 
 export default function DashboardPage() {
-  const { currency } = usePreferences();
+  const { currency, language } = usePreferences();
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
@@ -83,7 +83,7 @@ export default function DashboardPage() {
                         </div>
                       </TableCell>
                       <TableCell>{sale.region}</TableCell>
-                      <TableCell className="text-right">{sale.amount.toLocaleString('en-US', { style: 'currency', currency: currency })}</TableCell>
+                      <TableCell className="text-right">{sale.amount.toLocaleString(language === 'id' ? 'id-ID' : 'en-US', { style: 'currency', currency: currency })}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

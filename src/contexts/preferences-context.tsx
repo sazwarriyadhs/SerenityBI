@@ -18,7 +18,7 @@ const PreferencesContext = createContext<PreferencesContextType | undefined>(
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('en');
-  const [currency, setCurrency] = useState<Currency>('USD');
+  const [currency, setCurrency] = useState<Currency>('IDR');
 
   return (
     <PreferencesContext.Provider
