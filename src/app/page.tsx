@@ -21,7 +21,7 @@ export default function DashboardPage() {
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           <KpiCard
             title={{ en: 'Total Revenue', id: 'Total Pendapatan' }}
-            amount="125231098"
+            amount="12523109800"
             change="+12.5%"
             icon="DollarSign"
             iconColor="text-green-500"
@@ -57,9 +57,13 @@ export default function DashboardPage() {
           </div>
           <SalesByProductChart />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+
+        <div className="grid grid-cols-1 gap-4 md:gap-8">
+            <GeospatialView />
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2">
           <AiTrendSummary />
-          <GeospatialView />
           <Card>
             <CardHeader>
               <CardTitle>Recent Sales</CardTitle>
