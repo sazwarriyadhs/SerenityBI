@@ -83,7 +83,9 @@ export default function ProductHighlights() {
                     sales: topProduct[1],
                 }
             };
-        }).filter(item => item.topProduct !== null);
+        })
+        .filter(item => item.topProduct !== null)
+        .sort((a, b) => (b.topProduct?.sales ?? 0) - (a.topProduct?.sales ?? 0));
 
     }, [clients, selectedRegion]);
 
