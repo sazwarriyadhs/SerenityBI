@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { PreferencesProvider } from '@/contexts/preferences-context';
 import { ClientProvider } from '@/contexts/client-context';
+import { FilterProvider } from '@/contexts/filter-context';
 
 export const metadata: Metadata = {
   title: 'Indonesian MarketSight',
@@ -27,8 +28,10 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <ClientProvider>
           <PreferencesProvider>
-            {children}
-            <Toaster />
+            <FilterProvider>
+              {children}
+              <Toaster />
+            </FilterProvider>
           </PreferencesProvider>
         </ClientProvider>
       </body>

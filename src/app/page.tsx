@@ -6,6 +6,7 @@ import SalesOverTimeChart from '@/components/dashboard/sales-over-time-chart';
 import SalesByProductChart from '@/components/dashboard/sales-by-product-chart';
 import GeospatialView from '@/components/dashboard/geospatial-view';
 import AiTrendSummary from '@/components/dashboard/ai-trend-summary';
+import ProductHighlights from '@/components/dashboard/product-highlights';
 import { useClient } from '@/contexts/client-context';
 
 export default function DashboardPage() {
@@ -35,9 +36,13 @@ export default function DashboardPage() {
           <SalesByProductChart />
         </div>
 
+        <ProductHighlights />
+
         <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-1">
-            <GeospatialView />
-            <AiTrendSummary />
+          <GeospatialView />
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-1">
+          <AiTrendSummary />
         </div>
       </main>
     </div>

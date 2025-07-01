@@ -19,6 +19,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { PreferencesSheet } from '@/components/dashboard/preferences-sheet';
 import { usePreferences } from '@/contexts/preferences-context';
 import { useClient } from '@/contexts/client-context';
+import { useFilters } from '@/contexts/filter-context';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -31,6 +32,7 @@ export default function DashboardHeader() {
   const { language } = usePreferences();
   const { clients, activeClient, switchClient } = useClient();
   const { Logo, name: clientName, recentSales, products, regions } = activeClient;
+  const { selectedRegion, setSelectedRegion, selectedProduct, setSelectedProduct } = useFilters();
 
   const handleShare = () => {
     if (navigator.share) {
@@ -160,28 +162,38 @@ export default function DashboardHeader() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                {filterLabels[language].region}
-                <ChevronDown className="ml-2 h-4 w-4" />
+               <Button variant="outline" className="min-w-[150px] justify-between">
+                <span className="truncate pr-1">{selectedRegion === 'All Regions' ? filterLabels[language].region : selectedRegion}</span>
+                <ChevronDown className="h-4 w-4 flex-shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setSelectedRegion('All Regions')}>
+                {language === 'id' ? 'Semua Wilayah' : 'All Regions'}
+              </DropdownMenuItem>
               {regions.map((region) => (
-                <DropdownMenuItem key={region}>{region}</DropdownMenuItem>
+                <DropdownMenuItem key={region} onClick={() => setSelectedRegion(region)}>
+                  {region}
+                </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                {filterLabels[language].product}
-                <ChevronDown className="ml-2 h-4 w-4" />
+              <Button variant="outline" className="min-w-[150px] justify-between">
+                <span className="truncate pr-1">{selectedProduct === 'All Products' ? filterLabels[language].product : selectedProduct}</span>
+                <ChevronDown className="h-4 w-4 flex-shrink-0" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+               <DropdownMenuItem onClick={() => setSelectedProduct('All Products')}>
+                {language === 'id' ? 'Semua Produk' : 'All Products'}
+              </DropdownMenuItem>
               {products.map((product) => (
-                <DropdownMenuItem key={product}>{product}</DropdownMenuItem>
+                <DropdownMenuItem key={product} onClick={() => setSelectedProduct(product)}>
+                  {product}
+                </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
