@@ -5,7 +5,18 @@ import { summarizeMarketTrends } from '@/ai/flows/summarize-market-trends';
 const toCsv = (data: { [key: string]: any }[]): string => {
   if (data.length === 0) return "";
   const headers = Object.keys(data[0]);
-  const rows = data.map(row => headers.map(header => JSON.stringify(row[header])).join(','));
+  const rows = data.map(row =>
+    headers.map(header => {
+      const value = row[header];
+      if (typeof value === 'string') {
+        // Escape double quotes by doubling them and wrap in quotes if it contains a comma or quote
+        if (value.includes(',') || value.includes('"')) {
+          return `"${value.replace(/"/g, '""')}"`;
+        }
+      }
+      return value;
+    }).join(',')
+  );
   return [headers.join(','), ...rows].join('\n');
 };
 
