@@ -1,6 +1,6 @@
 "use client";
 
-import { DollarSign, Package, ShoppingCart, Users } from 'lucide-react';
+import { DollarSign, Package, ShoppingCart, Users, TrendingUp, Building } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { usePreferences } from '@/contexts/preferences-context';
 
@@ -9,6 +9,8 @@ const iconMap = {
   ShoppingCart,
   Package,
   Users,
+  TrendingUp,
+  Building,
 };
 
 type KpiCardProps = {

@@ -22,7 +22,7 @@ export default function DashboardPage() {
               title={kpi.title}
               amount={kpi.amount}
               change={kpi.change}
-              icon={kpi.icon as any}
+              icon={kpi.icon}
               iconColor={kpi.iconColor}
               formatAsCurrency={kpi.formatAsCurrency}
             />
