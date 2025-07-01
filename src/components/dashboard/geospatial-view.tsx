@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from 'react';
 import {
   Card,
   CardContent,
@@ -15,16 +16,50 @@ import { useClient } from '@/contexts/client-context';
 export default function GeospatialView() {
   const { language, currency } = usePreferences();
   const { activeClient } = useClient();
-  const { geospatial, recentSales } = activeClient;
+  const { geospatial, recentSales, regions } = activeClient;
 
   const content = {
     en: {
-      transactions: "Recent Transactions",
+      title: "Sales by Region",
+      topProduct: "Top Product",
+      region: "Region",
+      totalSales: "Total Sales",
     },
     id: {
-      transactions: "Transaksi Terkini",
+      title: "Penjualan per Wilayah",
+      topProduct: "Produk Unggulan",
+      region: "Wilayah",
+      totalSales: "Total Penjualan",
     }
   };
+
+  const salesByRegion = useMemo(() => {
+    return regions.map(region => {
+      const regionSales = recentSales.filter(sale => sale.region === region);
+      const totalSales = regionSales.reduce((total, sale) => total + sale.amount, 0);
+
+      const productSales = new Map<string, number>();
+      regionSales.forEach(sale => {
+        productSales.set(sale.product, (productSales.get(sale.product) || 0) + sale.amount);
+      });
+
+      let topProduct = 'N/A';
+      let maxSales = 0;
+      for (const [product, sales] of productSales.entries()) {
+        if (sales > maxSales) {
+          maxSales = sales;
+          topProduct = product;
+        }
+      }
+
+      return {
+        region,
+        totalSales,
+        topProduct,
+      };
+    }).sort((a,b) => b.totalSales - a.totalSales);
+  }, [recentSales, regions]);
+
 
   return (
     <Card>
@@ -42,26 +77,28 @@ export default function GeospatialView() {
             />
           </div>
           <div className="flex flex-col h-full p-6 pt-0 sm:p-0">
-            <h3 className="text-lg font-semibold mb-2 flex-shrink-0">{content[language].transactions}</h3>
+            <h3 className="text-lg font-semibold mb-2 flex-shrink-0">{content[language].title}</h3>
             <div className="flex-grow min-h-0">
                 <ScrollArea className="h-full pr-4">
                    <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Product & City</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead>{content[language].region}</TableHead>
+                        <TableHead className="text-right">{content[language].totalSales}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {recentSales.map((sale) => (
-                        <TableRow key={sale.id}>
+                      {salesByRegion.map((data) => (
+                        <TableRow key={data.region}>
                           <TableCell>
-                            <div className="font-medium">{sale.product}</div>
+                            <div className="font-medium">{data.region}</div>
                             <div className="text-sm text-muted-foreground">
-                              {sale.region}
+                              {content[language].topProduct}: {data.topProduct}
                             </div>
                           </TableCell>
-                          <TableCell className="text-right">{sale.amount.toLocaleString(language === 'id' ? 'id-ID' : 'en-US', { style: 'currency', currency: currency })}</TableCell>
+                          <TableCell className="text-right">
+                              {data.totalSales.toLocaleString(language === 'id' ? 'id-ID' : 'en-US', { style: 'currency', currency: currency, minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
