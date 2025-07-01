@@ -51,21 +51,22 @@ const summarizeMarketTrendsPrompt = ai.definePrompt({
   name: 'summarizeMarketTrendsPrompt',
   input: {schema: SummarizeMarketTrendsInputSchema},
   output: {schema: SummarizeMarketTrendsOutputSchema},
-  prompt: `You are an expert market analyst specializing in the Indonesian food market. Based on the provided transaction data, generate a concise summary of the key market trends. 
+  prompt: `You are a data analyst expert for the Indonesian food market. Your task is to analyze the provided sales data and generate a market trend summary.
 
-Your summary should highlight:
-- Top-performing products and regions.
-- Any observable sales patterns or growth trends.
-- Potential market opportunities.
+Follow these steps for your analysis:
+1.  **Overall Performance**: Calculate the total revenue from the 'amount' column.
+2.  **Top Performers**: Identify the top 3 products and top 3 regions by total sales amount.
+3.  **Trend Identification**: Look for any interesting patterns or trends. For example, does a specific product sell exceptionally well in a particular region? Are there any vendors that dominate the sales?
+4.  **Anomaly Detection**: Identify any transactions that seem like outliers or anomalies. For example, a transaction amount that is significantly higher or lower than the average for that product.
+5.  **Synthesize Summary**: Based on the analysis above, write a concise summary for the 'summary' field. The summary must be insightful and based strictly on the data.
+6.  **List Anomalies**: List the anomalies you found in the 'anomalies' field. If no anomalies are found, state that clearly.
 
-Additionally, identify any significant anomalies in the data, such as unusually high or low sales figures for a product or region, and list them in the 'anomalies' field.
+**Dataset Description**: {{{datasetDescription}}}
 
-Dataset Description: {{{datasetDescription}}}
-
-Dataset (CSV format):
+**Dataset (CSV format)**:
 {{{data}}}
 
-Provide your analysis based *only* on the data provided.`,
+Provide your analysis based *only* on the data provided. Structure your output in the requested JSON format.`,
 });
 
 const summarizeMarketTrendsFlow = ai.defineFlow(
